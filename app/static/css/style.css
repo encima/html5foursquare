@@ -8,12 +8,29 @@ body {
   --font: rgb(246 246 246);
 }
 
+.loading {
+    padding-top: 40%;
+    padding-left: 30%;
+}
 
+.loading img {
+    padding-left: 10%;
+}
 
-.mobile-chat {
-    width: 100% !important;
-    height: 100% !important;
-    right: 0% !important;
+.checked-in {
+    background-color: rgb(81, 136, 175);
+    font-style: italic;
+}
+
+.place-list {
+    list-style: none;
+    list-style-type: none;
+}
+
+.place-list li {
+    list-style: none;
+    list-style-type: none;
+    padding-bottom: 3%;
 }
 
 li {

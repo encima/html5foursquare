@@ -37,8 +37,9 @@
         <div id="wrapper">
         <!-- Main Content -->
 <br>
-        <ul class="place-list">
-        </ul>
+        {% block body %}
+
+        {% endblock %}
 
         </div>
 
@@ -60,15 +61,18 @@
             function showPosition(position) {
                 latlon = position.coords.latitude + "," + position.coords.longitude;
                 {% if  user.sq_access_token is not none: %}
+                    $('.loading').remove();
                     if(latlon !== undefined) {
                         $.post('/api/venues', {'ll': latlon }, function(data){
                             for(d in data.venues) {
                                 place = data.venues[d];
-                                $('.place-list').append("<li class='place' data-id='" + place['id'] + "'><h3>" + place['name'] + "</h3></li>")
+                                $('.place-list').append("<li class='place' data-id='" + place['id'] + "'><h2>" + place['name'] + "</h2></li><hr>")
                             }
                             $('.place').on('click', function() {
+                                var self = this;
                                 $.post('/api/checkin', {'id': $(this).data('id'), 'll': latlon }, function(data){
-                                    console.log(data);
+                                    $(self).addClass('checked-in');
+                                    $(".place-list li:not(:first-child)").remove();
                                 });
                             });
                         });
@@ -78,7 +82,7 @@
 
 
 
-            getLocation();
+            // getLocation();
 
 
         });

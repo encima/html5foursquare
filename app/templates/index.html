@@ -8,6 +8,13 @@
               <input type="text" name="code" id="inputCode" class="form-control" placeholder="Foursquare Code" required="yes" autofocus="">
               <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </form>
+        {% else: %}
+            <div class="loading">
+                <img src="{{ url_for('static', filename='img/ajax-loader.gif') }}" alt="loading circle"></img>
+                <h3> Loading Venues </h3>
+            </div>
+            <ul class="place-list">
+            </ul>
         {% endif %}
 </div>
 {% endblock %}
