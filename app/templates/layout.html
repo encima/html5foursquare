@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Web Checkin</title>
+
+    <meta name="author" content="chris@gwillia.ms">
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+  </head>
+  <body>
+
+        <nav class="navbar navbar-default navbar-fixed-top" id="main-nav" role="navigation">
+            <div class="navbar-header friend-search">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                     <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+                <h2>HTML5 4Square</h2>
+            </div>
+
+            <div id="navbar-collapse-1">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/logout" class='logout-user'>Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+        <div id="wrapper">
+        <!-- Main Content -->
+<br>
+        <ul class="place-list">
+        </ul>
+
+        </div>
+
+    <script src={{ url_for('static', filename='js/jquery.min.js') }}></script>
+    <script src={{ url_for('static', filename='js/bootstrap.min.js') }}></script>
+    <script src={{ url_for('static', filename='js/scripts.js') }}></script>
+    <script type="text/javascript">
+        $(function() {
+
+            var latlon;
+
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                latlon = position.coords.latitude + "," + position.coords.longitude;
+                {% if  user.sq_access_token is not none: %}
+                    if(latlon !== undefined) {
+                        $.post('/api/venues', {'ll': latlon }, function(data){
+                            for(d in data.venues) {
+                                place = data.venues[d];
+                                $('.place-list').append("<li class='place' data-id='" + place['id'] + "'><h3>" + place['name'] + "</h3></li>")
+                            }
+                            $('.place').on('click', function() {
+                                $.post('/api/checkin', {'id': $(this).data('id'), 'll': latlon }, function(data){
+                                    console.log(data);
+                                });
+                            });
+                        });
+                    }
+                {% endif %}
+            }
+
+
+
+            getLocation();
+
+
+        });
+    </script>
+  </body>
+</html>

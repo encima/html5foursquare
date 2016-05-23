@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+<div id="page-content-wrapper">
+        {% if  user.sq_access_token is none: %}
+            <a target="_blank" href="https://foursquare.com/oauth2/authenticate?response_type=code&client_id=WLQIEJQX4X3EN0NB3GCYSHKMU1VHNYIHBEUM1NEXNC5MYYAI&redirect_uri=http%3A%2F%2Fgwillia.ms">Authenticate!</a>
+            <form class="form-signin" action="{{ url_for('auth_foursquare') }}" method=post>
+              <label for="inputToken" class="sr-only">Please add code from URL here</label>
+              <input type="text" name="code" id="inputCode" class="form-control" placeholder="Foursquare Code" required="yes" autofocus="">
+              <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+        {% endif %}
+</div>
+{% endblock %}
